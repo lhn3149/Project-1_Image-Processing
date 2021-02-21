@@ -1,0 +1,8 @@
+//
+// Created by rmb35 on 2/21/2021.
+//
+
+#ifndef PROJECT_1_IMAGEPROCESSING_H
+#define PROJECT_1_IMAGEPROCESSING_H
+
+#endif //PROJECT_1_IMAGEPROCESSING_H
