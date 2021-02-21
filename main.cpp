@@ -10,7 +10,7 @@ int main()
 
     // Clion paths if cloned from repo
     string fileName = "..\\test_images\\lena.pgm";
-    string outputName = "..\\output_images\\lena-copy.pgm";
+    string outputName = "..\\processed_images\\lena-copy.pgm";
 
     //Open File set information
     if( openPGM(fileName) )
