@@ -2,7 +2,13 @@
 // Created by rmb35 on 2/21/2021.
 //
 
-#ifndef PROJECT_1_IMAGEPROCESSING_H
-#define PROJECT_1_IMAGEPROCESSING_H
+#ifndef IProcessing_H
+#define IProcessing_H
 
-#endif //PROJECT_1_IMAGEPROCESSING_H
+int** flipV( int **original, int height, int width );
+
+int** flipH( int **original, int height, int width );
+
+int** medFilter( int **original, int height, int width );
+
+#endif
