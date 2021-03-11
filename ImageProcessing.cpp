@@ -1,97 +1,78 @@
-#include "ImageProcessing.h"
-#include <iostream>
-#include <vector>
-#include <algorithm>
 
+//
+// Created by rmb35 on 2/21/2021.
+//
+
+#include "ImageProcessing.h"
+#include "SelectionSort.h"
+#include <iostream>
+#include <string>
 using namespace std;
 
-int** flipV( int **original, int height, int width )
+void **copyImage(int **original, int** processed, int height, int width)
 {
-    //Declare modified file memory
-    int **modified;
-    modified = new int *[height];
-
-    for (int i = 0; i < height; i++) {
-        modified[i] = new int[width];
-    }
-
-    int tempTop, tempBottom, w, h;
-    for( h = 0; h < height; h++ )
+    for (int i = 0; i < height; i++)
     {
-        for( w = 0; w < width; w++ )
+        for (int j = 0; j < width; j++)
         {
-            tempTop = *(*(original+h)+w);
-            tempBottom = *(*(original+(height-1-h))+w);
-
-            *(*(modified+h)+w) = tempBottom;
-            *(*(modified+(height-1-h))+w) = tempTop;
+            *(*(processed+i)+j) = *(*(original+i)+j);
         }
     }
-    return modified;
 }
 
-int** flipH( int **original, int height, int width )
+
+void **flipVertical(int **original, int** processed, int height, int width)
 {
-    //Declare modified file memory
-    int** modified;
-    modified = new int*[height];
-    for(int i = 0; i < height; i++)
-        modified[i] = new int[width];
-
-    int h,w;
-    int tempTop, tempBottom;
-    for (h = 0; h < height; h++) {
-        for (w = 0; w < width; w++)
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
         {
-            tempTop = *(*(original+h)+w);
-            tempBottom = *(*(original+h)+(width-1-w));
-
-            *(*(modified+h)+w) = tempBottom;
-            *(*(modified+h)+(width-1-w)) = tempTop;
+            *(*(processed+i)+j) = *(*(original+i)+width-j-1);  // +i) width-j-1
         }
     }
-    return modified;
 }
 
-int** medFilter( int **original, int height, int width )
+void **flipHorizontal(int **original, int** processed, int height, int width)
 {
-    cout << "in medFilter" << endl;
-    cout << height << endl;
-    cout << width << endl;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            *(*(processed+i)+j) = *(*(original+height-i+1)+j);
+        }
+    }
+}
 
-    int** modified;
-    modified = new int*[height];
-    for(int i = 0; i < height; i++)
-        modified[i] = new int[width];
+void** medianFilter( int **original, int** processed, int height, int width )
+{
+    int filterparam = 9 ;
 
-    vector<int> box;
+    int filterSize = filterparam * filterparam;
+
+    int* medianWindow = new int[filterSize];
 
 
     //iterate through every pixel possible (accounting for edge boundaries)
-    for(int j = 0; j < (height); j++)
+    for(int i = 0; i < (height); i++)
     {
-        for(int i = 0; i < (width); i++)
+        for(int j = 0; j < (width); j++)
         {
-            if(((i > 3) && (i < (width-4))) && ((j > 3) && (j < (height-4))))
+            if(((i > 3) && (i < (height-4))) && ((j > 3) && (j < (width-4))))
             {
-                box =  {*(*(original + j-4)+i-4), *(*(original + j-3)+i-4), *(*(original + j-2)+i-4), *(*(original + j-1)+i-4), *(*(original + j)+i-4), *(*(original + j+1)+i-4), *(*(original + j+2)+i-4), *(*(original + j+3)+i-4), *(*(original + j+4)+i-4),
-                        *(*(original + j-4)+i-3), *(*(original + j-3)+i-3), *(*(original + j-2)+i-3), *(*(original + j-1)+i-3), *(*(original + j)+i-3), *(*(original + j+1)+i-3), *(*(original + j+2)+i-3), *(*(original + j+3)+i-3), *(*(original + j+4)+i-3),
-                        *(*(original + j-4)+i-2), *(*(original + j-3)+i-2), *(*(original + j-2)+i-2), *(*(original + j-1)+i-2), *(*(original + j)+i-2), *(*(original + j+1)+i-2), *(*(original + j+2)+i-2), *(*(original + j+3)+i-2), *(*(original + j+4)+i-2),
-                        *(*(original + j-4)+i-1), *(*(original + j-3)+i-1), *(*(original + j-2)+i-1), *(*(original + j-1)+i-1), *(*(original + j)+i-1), *(*(original + j+1)+i-1), *(*(original + j+2)+i-1), *(*(original + j+3)+i-1), *(*(original + j+4)+i-1),
-                        *(*(original + j-4)+i),   *(*(original + j-3)+i),   *(*(original + j-2)+i),   *(*(original + j-1)+i),   *(*(original + j)+i),   *(*(original + j+1)+i),   *(*(original + j+2)+i),   *(*(original + j+3)+i),   *(*(original + j+4)+i),
-                        *(*(original + j-4)+i+1), *(*(original + j-3)+i+1), *(*(original + j-2)+i+1), *(*(original + j-1)+i+1), *(*(original + j)+i+1), *(*(original + j+1)+i+1), *(*(original + j+2)+i+1), *(*(original + j+3)+i+1), *(*(original + j+4)+i+1),
-                        *(*(original + j-4)+i+2), *(*(original + j-3)+i+2), *(*(original + j-2)+i+2), *(*(original + j-1)+i+2), *(*(original + j)+i+2), *(*(original + j+1)+i+2), *(*(original + j+2)+i+2), *(*(original + j+3)+i+2), *(*(original + j+4)+i+2),
-                        *(*(original + j-4)+i+3), *(*(original + j-3)+i+3), *(*(original + j-2)+i+3), *(*(original + j-1)+i+3), *(*(original + j)+i+3), *(*(original + j+1)+i+3), *(*(original + j+2)+i+3), *(*(original + j+3)+i+3), *(*(original + j+4)+i+3),
-                        *(*(original + j-4)+i+4), *(*(original + j-3)+i+4), *(*(original + j-2)+i+4), *(*(original + j-1)+i+4), *(*(original + j)+i+4), *(*(original + j+1)+i+4), *(*(original + j+2)+i+4), *(*(original + j+3)+i+4), *(*(original + j+4)+i+4)};
-                std::sort(box.begin(), box.end());
-                *(*(modified+j)+i) = box[40];
+                int p = 0; //position in medianwidow
+                for (int m = 0; m < filterparam; m++){
+                    for (int n = 0; n < filterparam; n++){
+                        medianWindow [p] = *(*(original+i-4+n)+j-4+m);
+                        p = p + 1;
+                    }
+                }
+                selectionSort(medianWindow,filterSize,ascending);
+                *(*(processed+i)+j) = medianWindow[40];
             }
             else
             {
-                *(*(modified+j)+i) = *(*(original+j)+i);
+                *(*(processed+i)+j) = *(*(original+i)+j);
             }
         }
     }
-
-    return modified;
 }

@@ -1,14 +1,24 @@
+
 //
 // Created by rmb35 on 2/21/2021.
 //
 
-#ifndef IProcessing_H
-#define IProcessing_H
+#ifndef PROJECT_1_IMAGEPROCESSING_H
+#define PROJECT_1_IMAGEPROCESSING_H
 
-int** flipV( int **original, int height, int width );
+#include <iostream>
 
-int** flipH( int **original, int height, int width );
+#include <fstream>
+#include <cstdio>
+#include <string>
 
-int** medFilter( int **original, int height, int width );
+void **flipHorizontal(int **original, int** processed, int height, int width);
 
-#endif
+void **flipVertical(int **original, int** processed, int height, int width);
+
+void **copyImage(int **original, int** processed, int height, int width);
+
+void **medianFilter(int **original, int** processed, int height, int width);
+
+
+#endif //PROJECT_1_IMAGEPROCESSING_H

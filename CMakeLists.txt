@@ -3,4 +3,4 @@ project(Project_1)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Project_1 main.cpp PGM.cpp ImageProcessing.cpp)
+add_executable(Project_1 main.cpp PGM.cpp ImageProcessing.cpp SelectionSort.cpp)
